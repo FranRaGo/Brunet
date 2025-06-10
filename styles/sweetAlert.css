@@ -1,0 +1,58 @@
+/* Fondo de las alertas */
+.swal2-popup {
+    background: rgba(0, 0, 0, 0.727); /* Fondo semitransparente */
+    -webkit-backdrop-filter: blur(20px); /* Efecto de desenfoque */
+    backdrop-filter: blur(20px); /* Efecto de desenfoque */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.361); /* Sombra */
+    font-family: 'Lexend', sans-serif; /* Fuente personalizada */
+}
+
+/* Título de las alertas */
+.swal2-title {
+    color: var(--color-principal); /* Color principal */
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Texto de las alertas */
+.swal2-html-container {
+    color: var(--white-grey); /* Color del texto */
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Botones de las alertas */
+.swal2-confirm, .swal2-cancel {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Botón de confirmación con la clase .btn */
+.swal2-confirm {
+    background-color: var(--color-principal);
+    color: var(--white);
+    border: none;
+}
+
+.swal2-confirm:hover {
+    background-color: var(--color-secundario);
+    transform: translateY(-3px);
+}
+
+/* Botón de cancelación con la clase .info_btn */
+.swal2-cancel {
+    background-color: transparent;
+    color: var(--color-principal);
+    border: 2px solid var(--color-principal);
+}
+
+.swal2-cancel:hover {
+    background-color: var(--color-principal);
+    color: var(--white-grey);
+    transform: translateY(-3px);
+}
