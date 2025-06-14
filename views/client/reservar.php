@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hora = trim($_POST['hora'] ?? '');
     $personas = intval($_POST['personas'] ?? 0);
     $menuGrupo = trim($_POST['menu_grupo'] ?? '');
+    $token = bin2hex(random_bytes(16));
 
     // Horarios válidos por turno
     $horariosValidos = [
@@ -78,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // Preparar la consulta para insertar la reserva
-        $query = "INSERT INTO reservas (nombre, telefono, zona, fecha, hora, personas, turno, menu_escogido) 
-                  VALUES (:nombre, :telefono, :zona, :fecha, :hora, :personas, :turno, :menu_escogido)";
+        $query = "INSERT INTO reservas (nombre, telefono, zona, fecha, hora, personas, turno, menu_escogido, token_cancelacion) 
+                  VALUES (:nombre, :telefono, :zona, :fecha, :hora, :personas, :turno, :menu_escogido,:token)";
         $stmt = $db->prepare($query);
 
         // Vincular los parámetros
@@ -91,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':personas', $personas, PDO::PARAM_INT);
         $stmt->bindParam(':turno', $turno);
         $stmt->bindParam(':menu_escogido', $menuGrupo);
+        $stmt->bindParam(':token', $token);
 
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success', 'message' => 'Reserva realizada con éxito.']);
@@ -101,28 +103,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $para = $correo;
             $asunto = "=?UTF-8?B?" . base64_encode("Confirmación de reserva - Restaurante Brunet") . "?=";
-            $mensaje = "
-                <html>
-                <head>
-                <title>Confirmación de reserva</title>
-                </head>
-                <body>
-                <h2>Reserva confirmada</h2>
-                <p>Gracias, <strong>$nombre</strong>, por tu reserva en el Restaurante Brunet.</p>
-                <p><strong>Fecha:</strong> $fecha<br>
-                    <strong>Hora:</strong> $hora<br>
-                    <strong>Zona:</strong> $zona<br>
-                    <strong>Personas:</strong> $personas<br>" .
+$cancelUrl = "http://localhost:8888/brunet/views/client/cancelar_reserva.php?" . http_build_query([
+    'token' => $token,
+    'correo' => $correo,
+    'nombre' => $nombre,
+    'fecha' => $fecha,
+    'hora' => $hora,
+    'zona' => $zona,
+]);            
+$mensaje = "
+    <html>
+    <head>
+    <title>Confirmación de reserva</title>
+    </head>
+    <body>
+    <h2>Reserva confirmada</h2>
+    <p>Gracias, <strong>$nombre</strong>, por tu reserva en el Restaurante Brunet.</p>
+    <p><strong>Fecha:</strong> $fecha<br>
+       <strong>Hora:</strong> $hora<br>
+       <strong>Zona:</strong> $zona<br>
+       <strong>Personas:</strong> $personas<br>" .
                 ($personas > 5 ? "<strong>Menú de grupo:</strong> $menuGrupo<br>" : "") .
                 "</p>
-                <p>Te esperamos. Si necesitas cambiar o cancelar tu reserva, por favor contáctanos.</p>
-                </body>
-                </html>
-                ";
+    <p>Te esperamos. Si necesitas cambiar o cancelar tu reserva, por favor usa el siguiente botón:</p>
+    <p>
+        <a href='$cancelUrl' style='background-color:#e74c3c;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;'>
+            Cancelar reserva
+        </a>
+    </p>
+    </body>
+    </html>
+";
 
             $cabeceras = "MIME-Version: 1.0" . "\r\n";
             $cabeceras .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $cabeceras .= "From: reservas@brunet.com" . "\r\n"; // Puedes cambiarlo por un dominio válido
+            $cabeceras .= "From: elbrunetmasia@gmail.com" . "\r\n";
 
             mail($para, $asunto, $mensaje, $cabeceras);
         } else {

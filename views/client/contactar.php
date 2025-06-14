@@ -62,7 +62,7 @@
             </div>
             <div class="contact_datas">
                 <div class="form_contact">
-                    <form action="" class="contact_form">
+                    <form action="send_message.php" method="POST" class="contact_form">
                         <h2>Formulario de contacto</h2>
                         <div class="form_group">
                             <label for="nombre">Nombre</label>
