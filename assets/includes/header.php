@@ -1,3 +1,11 @@
+<?php
+
+    $admin = false;
+
+    if(!empty($_GET['adminTokken']) && $_GET['adminTokken'] === '1234'){
+        $admin = true;
+    }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,6 +39,13 @@
         </div>
         <nav>
             <ul>
+                <?php
+                    if($admin){
+                        ?>
+                        <li><a href="/brunet/views/admin/gestionar_menus.php?adminTokken=1234">Settings</a><</li>
+                        <?php
+                    }
+                ?>
                 <li><a href="/brunet/index.php"><i class='bx bx-home'></i> Inicio</a></li>
                 <li><a href="/brunet/views/client/reservar_client.php"><i class='bx bx-calendar'></i> Reservas</a></li>
                 <li><a href="/brunet/views/client/contactar.php"><i class='bx bx-phone'></i> Contacto</a></li>
