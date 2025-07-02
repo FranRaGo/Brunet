@@ -79,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // Preparar la consulta para insertar la reserva
-        $query = "INSERT INTO reservas (nombre, telefono, zona, fecha, hora, personas, turno, menu_escogido, token_cancelacion) 
-                  VALUES (:nombre, :telefono, :zona, :fecha, :hora, :personas, :turno, :menu_escogido,:token)";
+        $query = "INSERT INTO reservas (nombre, telefono, zona, fecha, hora, personas, turno, menu_escogido, token_cancelacion, email) 
+                  VALUES (:nombre, :telefono, :zona, :fecha, :hora, :personas, :turno, :menu_escogido,:token, :email)";
         $stmt = $db->prepare($query);
 
         // Vincular los parámetros
@@ -93,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':turno', $turno);
         $stmt->bindParam(':menu_escogido', $menuGrupo);
         $stmt->bindParam(':token', $token);
+$stmt->bindParam(':email', $correo);
 
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success', 'message' => 'Reserva realizada con éxito.']);

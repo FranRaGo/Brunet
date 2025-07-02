@@ -23,12 +23,12 @@ $cabeceras .= "Content-Type: text/plain; charset=UTF-8\r\n";
 if (mail($admin_email, $asunto, $contenido, $cabeceras)) {
     echo "<script>
         alert('Mensaje enviado correctamente');
-        window.location.href = 'contactar.php'; // redirección
+        window.location.href = 'contactar.php';
     </script>";
 } else {
     echo "<script>
         alert('El mensaje no se ha enviado correctamente');
-        window.location.href = 'contactar.php'; // redirección
+        window.location.href = 'contactar.php';
     </script>";
 }
 ?>
