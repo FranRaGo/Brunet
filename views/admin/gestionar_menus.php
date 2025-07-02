@@ -6,7 +6,7 @@ if (!empty($_GET['adminTokken']) && $_GET['adminTokken'] === '1234') {
     header("Location: " . "../../index.php");
     exit();
 }
-$panelSel = 2;
+$panelSel = 1;
 
 if (!empty($_POST['panelSel']) && $_POST['panelSel'] == 2) {
     $panelSel = 2;
@@ -199,7 +199,9 @@ $resultado = $db->query("SELECT * FROM reservas ORDER BY fecha, hora")->fetchAll
 </head>
 
 <body>
-
+        <form method="post">
+            <button name="panelSel" value="<?php if($panelSel == 1){ echo 2; }else{ echo 1; } ?>"><?php if($panelSel == 1){ echo 'Reservas'; }else{ echo 'Carta'; } ?></button>
+        </form>
     <?php
     if ($panelSel == 1) {
     ?>
