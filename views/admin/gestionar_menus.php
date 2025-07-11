@@ -280,7 +280,6 @@ $resultado = $db->query("SELECT * FROM reservas ORDER BY fecha, hora")->fetchAll
                         <td>
                             <label>
                                 <input type="checkbox" name="sugerencia" <?= $plato['sugerencia'] ? 'checked' : '' ?>>
-                                Sí
                             </label>
                         </td>
                         <td>
