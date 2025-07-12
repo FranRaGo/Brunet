@@ -153,55 +153,21 @@ $resultado = $db->query("SELECT * FROM reservas ORDER BY fecha, hora")->fetchAll
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Carta</title>
-    <style>
-        body {
-            font-family: Arial;
-            padding: 20px;
-        }
-
-        h2 {
-            margin-top: 40px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            vertical-align: top;
-        }
-
-        th {
-            background-color: #eee;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 5px;
-            box-sizing: border-box;
-        }
-
-        form.inline {
-            display: inline;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-        }
-    </style>
+    <link rel="stylesheet" href="../../styles/admin.css">
 </head>
 
 <body>
-        <form method="post">
-            <button name="panelSel" value="<?php if($panelSel == 1){ echo 2; }else{ echo 1; } ?>"><?php if($panelSel == 1){ echo 'Reservas'; }else{ echo 'Carta'; } ?></button>
-        </form>
+    <form method="post">
+        <button name="panelSel" value="<?php if ($panelSel == 1) {
+                                            echo 2;
+                                        } else {
+                                            echo 1;
+                                        } ?>"><?php if ($panelSel == 1) {
+                                                    echo 'Reservas';
+                                                } else {
+                                                    echo 'Carta';
+                                                } ?></button>
+    </form>
     <?php
     if ($panelSel == 1) {
     ?>
@@ -234,7 +200,9 @@ $resultado = $db->query("SELECT * FROM reservas ORDER BY fecha, hora")->fetchAll
                         </form>
                     </td>
                     <td>
-                        <a href="?eliminar_categoria=<?= $cat['id'] ?>&adminTokken=1234" onclick="return confirm('¿Eliminar esta categoría y sus platos?')">Eliminar</a>
+                        <?php if ($cat['id'] < 14 || $cat['id'] > 16) { ?>
+                            <a href="?eliminar_categoria=<?= $cat['id'] ?>&adminTokken=1234" onclick="return confirm('¿Eliminar esta categoría y sus platos?')">Eliminar</a>
+                        <?php } ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
